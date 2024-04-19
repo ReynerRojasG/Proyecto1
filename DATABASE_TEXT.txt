@@ -99,6 +99,18 @@ BEGIN
         AND RAFFLE_STATE = 1;
 END Get_Purchased_Numbers;
 
+create or replace NONEDITIONABLE PROCEDURE Get_Reserved_Numbers (
+    p_raffle_name IN VARCHAR2,
+    p_numbers_cursor OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_numbers_cursor FOR
+        SELECT RAFFLE_NUMBER
+        FROM Numbers
+        WHERE RAFFLE_NAME = p_raffle_name
+        AND RAFFLE_STATE = 2;
+END Get_Reserved_Numbers;
+
 CREATE OR REPLACE PROCEDURE Get_Winning_Number_Info (
     p_raffle_name IN VARCHAR2,
     p_winning_number IN NUMBER,
