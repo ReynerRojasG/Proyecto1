@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="Proyecto1.jnlp">
+  <information>
+    <title>Proyecto1</title>
+    <vendor>Reyner</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="Proyecto1.jar" size="80955" download="eager" />
+    <jar href="lib\ojdbc8.jar" size="5155746" download="eager" />
+  </resources>
+  <jfx:javafx-desc  width="800" height="600" main-class="proyecto1.Proyecto1"  name="Proyecto1" />
+  <update check="always"/>
+</jnlp>

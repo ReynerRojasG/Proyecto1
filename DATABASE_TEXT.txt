@@ -1,0 +1,114 @@
+CREATE SEQUENCE sequence_raffles START WITH 1 INCREMENT BY 1;
+
+CREATE TABLE Raffle (
+    R_ID NUMBER PRIMARY KEY,
+    R_NAME VARCHAR2(100),
+    R_DATE VARCHAR2(100),
+    NUMBER_QUANTITY NUMBER,
+    PRICE NUMBER,
+    PRIZE VARCHAR2(100)
+    );
+
+CREATE OR REPLACE TRIGGER tgr_raffle
+BEFORE INSERT ON Raffle
+FOR EACH ROW
+BEGIN
+    SELECT sequence_raffles.NEXTVAL INTO :new.R_ID FROM dual;
+END;
+
+CREATE TABLE Numbers (
+    RAFFLE_NAME VARCHAR2(100),
+    BUYER VARCHAR2(100),
+    RAFFLE_NUMBER INT,
+    RAFFLE_STATE INT
+);
+
+
+--Procedures
+create or replace NONEDITIONABLE PROCEDURE Insert_Raffle(
+p_name IN VARCHAR2,
+p_date IN VARCHAR2,
+p_quantity IN NUMBER,
+p_price IN NUMBER,
+p_prize IN VARCHAR2
+) AS
+BEGIN 
+    INSERT INTO Raffle (R_NAME, R_DATE, NUMBER_QUANTITY, PRICE, PRIZE)
+    VALUES (p_name, p_date, p_quantity, p_price, p_prize);
+    COMMIT;
+END Insert_Raffle;
+
+create or replace NONEDITIONABLE PROCEDURE Get_Raffle_Name (
+    p_cursor OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT R_NAME FROM Raffle;
+END Get_Raffle_Name;
+
+create or replace NONEDITIONABLE PROCEDURE Get_Raffle_Quantity (
+    p_name_raffle IN VARCHAR2,
+    p_number_total OUT NUMBER
+) AS
+BEGIN
+    SELECT NUMBER_QUANTITY INTO p_number_total
+    FROM Raffle
+    WHERE R_NAME =  p_name_raffle;
+END Get_Raffle_Quantity;
+
+create or replace NONEDITIONABLE PROCEDURE Insert_Numbers(
+    p_name IN VARCHAR2,
+    p_buyer IN VARCHAR2,
+    p_number IN NUMBER,
+    p_state IN NUMBER,
+    p_payment IN VARCHAR2
+) AS
+BEGIN
+    -- Intentar actualizar el estado del número
+    UPDATE Numbers
+    SET RAFFLE_STATE = p_state,
+        BUYER = p_buyer,
+        PAYMENT = p_payment
+    WHERE RAFFLE_NAME = p_name
+    AND RAFFLE_NUMBER = p_number
+    AND RAFFLE_STATE = 2; -- Solo actualiza si el número está reservado
+
+    IF SQL%ROWCOUNT = 0 THEN -- Si no se actualiza ninguna fila, significa que el número no estaba reservado
+        -- Insertar un nuevo registro
+        INSERT INTO Numbers (RAFFLE_NAME, BUYER, RAFFLE_NUMBER, RAFFLE_STATE, PAYMENT)
+        VALUES (p_name, p_buyer, p_number, p_state, p_payment);
+    END IF;
+
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejo de excepciones
+        ROLLBACK; -- Revertir la transacción en caso de error
+        RAISE; -- Relanzar la excepción para que sea manejada por el código de llamada
+END Insert_Numbers;
+
+CREATE OR REPLACE NONEDITIONABLE PROCEDURE Get_Purchased_Numbers (
+    p_raffle_name IN VARCHAR2,
+    p_numbers_cursor OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_numbers_cursor FOR
+        SELECT RAFFLE_NUMBER
+        FROM Numbers
+        WHERE RAFFLE_NAME = p_raffle_name
+        AND RAFFLE_STATE = 1;
+END Get_Purchased_Numbers;
+
+CREATE OR REPLACE PROCEDURE Get_Winning_Number_Info (
+    p_raffle_name IN VARCHAR2,
+    p_winning_number IN NUMBER,
+    p_winning_number_cursor OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_winning_number_cursor FOR
+        SELECT *
+        FROM Numbers
+        WHERE RAFFLE_NAME = p_raffle_name
+        AND RAFFLE_NUMBER = p_winning_number;
+END Get_Winning_Number_Info;
+
