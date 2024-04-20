@@ -1,11 +1,8 @@
 package Controller;
 
 import Classes.DatabaseConnect;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,12 +14,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import proyecto1.Proyecto1;
 import Controller.Talonarios_listController;
-import java.awt.BorderLayout;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.GridPane;
 import javafx.geometry.Insets;
@@ -33,9 +28,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
 import oracle.jdbc.OracleTypes;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import javafx.scene.Node;
 
 /**

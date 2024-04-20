@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 public class Proyecto1 extends Application {
     // Crear un nuevo escenario estático para la aplicación
      static Stage stage1 = new Stage(); 
+     
     @Override
     public void start(Stage stage) throws Exception {
         // Cargar el archivo FXML de la pagina principal
@@ -29,6 +30,7 @@ public class Proyecto1 extends Application {
         stage1.setScene(scene);
         stage1.show();
     }
+   
     
     public static void SetNext(Scene scene, String title){
         stage1.setScene(scene);

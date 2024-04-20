@@ -9,7 +9,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #1E435B;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Winner_dataController">
    <children>
-      <ImageView fitHeight="600.0" fitWidth="480.0" layoutX="355.0" layoutY="147.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imageTiquet" fitHeight="502.0" fitWidth="332.0" layoutX="804.0" layoutY="162.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Images/Comprobante%20ganador.jpg" />
          </image>
@@ -19,27 +19,37 @@
             <Font name="Segoe UI Semibold" size="12.0" />
          </font>
       </Button>
-      <Label fx:id="winRaffleName_lbl" layoutX="550.0" layoutY="295.0" prefHeight="30.0" prefWidth="245.0">
+      <Label fx:id="winRaffleName_lbl" layoutX="919.0" layoutY="261.0" prefHeight="30.0" prefWidth="245.0">
          <font>
             <Font name="Consolas" size="20.0" />
          </font>
       </Label>
-      <Label fx:id="winName_lbl" layoutX="539.0" layoutY="366.0" prefHeight="30.0" prefWidth="245.0">
+      <Label fx:id="winName_lbl" layoutX="928.0" layoutY="309.0" prefHeight="30.0" prefWidth="245.0">
          <font>
             <Font name="Consolas" size="20.0" />
          </font>
       </Label>
-      <Label fx:id="winNumber_lbl" layoutX="601.0" layoutY="419.0" prefHeight="30.0" prefWidth="245.0">
+      <Label fx:id="winNumber_lbl" layoutX="975.0" layoutY="340.0" prefHeight="30.0" prefWidth="245.0">
          <font>
             <Font name="Segoe UI Semibold" size="20.0" />
          </font>
       </Label>
-      <Label fx:id="winPayment_lbl" layoutX="600.0" layoutY="470.0" prefHeight="30.0" prefWidth="245.0">
+      <Label fx:id="winPayment_lbl" layoutX="970.0" layoutY="385.0" prefHeight="30.0" prefWidth="245.0">
          <font>
             <Font name="Segoe UI Semibold" size="20.0" />
          </font>
       </Label>
-      <Button fx:id="winnerGenerate_btn" layoutX="470.0" layoutY="54.0" mnemonicParsing="false" onAction="#generateWinner" prefHeight="59.0" prefWidth="245.0" style="-fx-background-radius: 30; -fx-background-color: #16222A; -fx-border-radius: 30; -fx-border-width: 2; -fx-border-color: #adc178;" text="GENERAR GANADOR" textFill="WHITE">
+      <Button fx:id="winnerGenerate_btn" layoutX="285.0" layoutY="54.0" mnemonicParsing="false" onAction="#generateWinnerNumber" prefHeight="59.0" prefWidth="254.0" style="-fx-background-radius: 30; -fx-background-color: #16222A; -fx-border-radius: 30; -fx-border-width: 2; -fx-border-color: #adc178;" text="GENERAR NUMERO GANADOR" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI Semibold" size="16.0" />
+         </font>
+      </Button>
+      <Label fx:id="numberWin_lbl" layoutX="377.0" layoutY="261.0" prefHeight="79.0" prefWidth="137.0" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI Semibold" size="40.0" />
+         </font>
+      </Label>
+      <Button fx:id="winnerGenerate_btn1" layoutX="843.0" layoutY="54.0" mnemonicParsing="false" onAction="#generateTiquet" prefHeight="59.0" prefWidth="254.0" style="-fx-background-radius: 30; -fx-background-color: #16222A; -fx-border-radius: 30; -fx-border-width: 2; -fx-border-color: #adc178;" text="IMPRIMIR COMPROBANTE" textFill="WHITE">
          <font>
             <Font name="Segoe UI Semibold" size="16.0" />
          </font>

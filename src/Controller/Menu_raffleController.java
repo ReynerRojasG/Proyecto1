@@ -8,12 +8,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -63,24 +66,66 @@ public class Menu_raffleController implements Initializable {
     }    
 
     // Metodo para insertar los datos de la rifa en la base de datos
-    private void insertData(){
+private void insertData() {
     try (Connection conn = DatabaseConnect.getConnection()) {
-            try (CallableStatement addRuffle = conn.prepareCall("{call Insert_Raffle(?, ?, ?, ?, ?)}")) {
-                // Establece los parametros del procedure 
-                addRuffle.setString(1, name_txt.getText());
-                addRuffle.setString(2, date_pck.getValue().toString());
-                addRuffle.setInt(3, Integer.parseInt(numbers_txt.getText()));
-                addRuffle.setInt(4, Integer.parseInt(price_txt.getText()));
-                addRuffle.setString(5, prize_txt.getText());
-                // Ejecuta el procedimiento almacenado
-                addRuffle.execute();
+        // Verificar si la cantidad de numeros es menor a 100
+        int numbers = Integer.parseInt(numbers_txt.getText());
+        if (numbers <= 100) {
+            // Verificar si ya existe un nombre de rifa igual en la base de datos
+            if (isRaffleNameUnique(name_txt.getText(), conn)) {
+                try (CallableStatement addRuffle = conn.prepareCall("{call Insert_Raffle(?, ?, ?, ?, ?)}")) {
+                    // Establece los parámetros del procedimiento
+                    addRuffle.setString(1, name_txt.getText());
+                    addRuffle.setString(2, date_pck.getValue().toString());
+                    addRuffle.setInt(3, numbers);
+                    addRuffle.setInt(4, Integer.parseInt(price_txt.getText()));
+                    addRuffle.setString(5, prize_txt.getText());
+                    // Ejecuta el procedimiento almacenado
+                    addRuffle.execute();
+                }
+            } else {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setHeaderText("Error");
+                    alert.setContentText("El nombre de la rifa ya está en uso, crea otro distinto");
+                    alert.showAndWait();
+                });
             }
+        } else {
+            Platform.runLater(() -> {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setHeaderText("Error");
+                alert.setContentText("La cantidad de numeros debe ser menor a 100.");
+                alert.showAndWait();
+            });
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } catch (NumberFormatException e) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setHeaderText("Error");
+            alert.setContentText("Ingrese un numero valido para la cantidad de numeros.");
+            alert.showAndWait();
+        });
+    }
+}
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+    
+    private boolean isRaffleNameUnique(String raffleName, Connection conn) throws SQLException {
+    // Realizar una consulta para verificar si el nombre de la rifa ya existe en la base de datos
+    String query = "SELECT COUNT(*) FROM Raffle WHERE R_NAME = ?";
+    try (CallableStatement statement = conn.prepareCall(query)) {
+        statement.setString(1, raffleName);
+        try (ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                // Si el recuento es 0, significa que el nombre de la rifa es único
+                return resultSet.getInt(1) == 0;
+            }
         }
     }
-    
+    return false;
+}
     // Metodo para manejar el evento de clic en el boton "Crear Rifa"
     @FXML
     private void createOption(ActionEvent event) {

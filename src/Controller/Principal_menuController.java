@@ -1,6 +1,7 @@
 package Controller;
 
 import Controller.Talonarios_listController;
+import Controller.Menu_raffleController;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -10,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import proyecto1.Proyecto1;
 
@@ -30,11 +32,8 @@ public class Principal_menuController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-         
+        
     }    
-
-
     @FXML
     private void createRafflePane(ActionEvent event) {
            try {

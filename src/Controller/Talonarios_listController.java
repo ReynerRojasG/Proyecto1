@@ -32,7 +32,7 @@ public class Talonarios_listController implements Initializable {
     @FXML
     private Button create_btn; 
     @FXML
-        private ListView<String> raffle_lv = new ListView<>();  // ListView para mostrar los nombres de las rifas 
+    private ListView<String> raffle_lv = new ListView<>();  // ListView para mostrar los nombres de las rifas 
     @FXML
     private Label lblShow;
     @FXML
@@ -114,7 +114,7 @@ public class Talonarios_listController implements Initializable {
     @FXML
     private void returnNumbers(ActionEvent event) {
         try {
-                Parent root = FXMLLoader.load(getClass().getResource("/FXML/numbers_window.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("/FXML/principal_page.fxml"));
                 Scene scene = new Scene(root);
                 Proyecto1.SetNext(scene, "Menu Principal");
             } catch (Exception e) {
